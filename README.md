@@ -1,1 +1,0 @@
-# Etica-y-Sostenibilidad-Ambiental-JUEGA-A-CONTESTAR-
