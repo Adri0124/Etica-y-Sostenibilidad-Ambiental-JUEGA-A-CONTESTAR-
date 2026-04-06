@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario TP3 - Etica y Sostenibilidad Ambiental - Unidad 2: Ecología FCA -UNJu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .opcion { transition: all 0.2s ease; cursor: pointer; border: 2px solid #e2e8f0; }
+        .opcion:hover { border-color: #10b981; background-color: #f0fdf4; }
+        .correcta { border-color: #10b981 !important; background-color: #d1fae5 !important; color: #065f46 !important; font-weight: bold; }
+        .incorrecta { border-color: #ef4444 !important; background-color: #fee2e2 !important; color: #991b1b !important; }
+        .oculto { display: none; }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-8 font-sans">
+
+    <div class="max-w-3xl mx-auto bg-white p-6 md:p-10 rounded-3xl shadow-xl">
+        <header class="text-center border-b pb-6 mb-8">
+            <h1 class="text-3xl font-black text-emerald-800">Autoevaluación TP3</h1>
+            <p class="text-slate-500 font-medium">Cátedra de Ética y Sostenibilidad Ambiental</p>
+        </header>
+
+        <div id="quiz-container" class="space-y-10">
+            <!-- PREGUNTA 1 -->
+            <div class="pregunta" data-id="1">
+                <p class="text-lg font-bold text-slate-700 mb-4">1. Según lo aprendido, ¿qué mide la Riqueza de especies (S)?</p>
+                <div class="space-y-3">
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '1')">A) La distribución equitativa de los individuos.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, true, '1')">B) El recuento numérico del número de especies presentes.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '1')">C) La biomasa total del ecosistema.</div>
+                </div>
+                <div class="feedback oculto mt-4 p-4 bg-emerald-50 text-emerald-800 rounded-lg text-sm border-l-4 border-emerald-500">
+                    <strong>Justificación:</strong> La Riqueza (S) es simplemente el conteo de cuántas especies distintas hay, sin importar cuántos individuos tiene cada una.
+                </div>
+            </div>
+
+            <!-- PREGUNTA 2 -->
+            <div class="pregunta" data-id="2">
+                <p class="text-lg font-bold text-slate-700 mb-4">2. En la Ficha B (Caña), la Dominancia (D) es muy alta. ¿Qué significa esto?</p>
+                <div class="space-y-3">
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, true, '2')">A) Que una sola especie concentra la gran mayoría de los individuos.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '2')">B) Que el sistema es muy estable y diverso.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '2')">C) Que hay muchos estratos vegetales diferentes.</div>
+                </div>
+                <div class="feedback oculto mt-4 p-4 bg-emerald-50 text-emerald-800 rounded-lg text-sm border-l-4 border-emerald-500">
+                    <strong>Justificación:</strong> La dominancia ocurre cuando una especie (como la caña de azúcar) "domina" el espacio y los recursos, reduciendo la equidad.
+                </div>
+            </div>
+
+            <!-- PREGUNTA 3 -->
+            <div class="pregunta" data-id="3">
+                <p class="text-lg font-bold text-slate-700 mb-4">3. ¿Por qué el Bosque Nativo (Ficha A) tiene mayor "Equidad" que el monocultivo?</p>
+                <div class="space-y-3">
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '3')">A) Porque tiene menos plantas totales.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, true, '3')">B) Porque el número de individuos se reparte de forma más pareja entre las especies.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '3')">C) Porque las plantas son más verdes.</div>
+                </div>
+                <div class="feedback oculto mt-4 p-4 bg-emerald-50 text-emerald-800 rounded-lg text-sm border-l-4 border-emerald-500">
+                    <strong>Justificación:</strong> La equidad (E) es máxima cuando todas las especies tienen una abundancia similar.
+                </div>
+            </div>
+
+            <!-- PREGUNTA 4 -->
+            <div class="pregunta" data-id="4">
+                <p class="text-lg font-bold text-slate-700 mb-4">4. ¿Cuál es la principal diferencia estructural entre la Ficha A y la B?</p>
+                <div class="space-y-3">
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, true, '4')">A) La pérdida de estratos verticales (emergentes, dosel, epífitas).</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '4')">B) La cantidad de agua disponible.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '4')">C) No hay diferencias estructurales, solo de especies.</div>
+                </div>
+                <div class="feedback oculto mt-4 p-4 bg-emerald-50 text-emerald-800 rounded-lg text-sm border-l-4 border-emerald-500">
+                    <strong>Justificación:</strong> El monocultivo simplifica el sistema a un solo estrato principal, eliminando nichos ecológicos e interacciones.
+                </div>
+            </div>
+
+            <!-- PREGUNTA 5 -->
+            <div class="pregunta" data-id="5">
+                <p class="text-lg font-bold text-slate-700 mb-4">5. Desde la Ecologia, ¿por qué es preocupante la baja biodiversidad estructural?</p>
+                <div class="space-y-3">
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '5')">A) Porque el suelo se vuelve más oscuro.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, true, '5')">B) Porque el ecosistema se vuelve frágil y menos resiliente.</div>
+                    <div class="opcion p-4 rounded-xl" onclick="verificar(this, false, '5')">C) No es preocupante si la producción es alta.</div>
+                </div>
+                <div class="feedback oculto mt-4 p-4 bg-emerald-50 text-emerald-800 rounded-lg text-sm border-l-4 border-emerald-500">
+                    <strong>Justificación:</strong> La pérdida de biodiversidad reduce la capacidad del sistema para enfrentar plagas o cambios climáticos (resiliencia).
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-12 pt-6 border-t text-center text-slate-400 text-xs">
+            © 2026 Cátedra de Ética y Sostenibilidad Ambiental - FCA UNJu
+        </footer>
+    </div>
+
+    <script>
+        function verificar(elemento, esCorrecto, preguntaId) {
+            // Obtener todas las opciones de esa pregunta
+            const opciones = elemento.parentElement.querySelectorAll('.opcion');
+            
+            // Deshabilitar clics adicionales en esta pregunta
+            opciones.forEach(opt => opt.style.pointerEvents = 'none');
+
+            // Marcar correcta/incorrecta
+            if (esCorrecto) {
+                elemento.classList.add('correcta');
+            } else {
+                elemento.classList.add('incorrecta');
+                // Mostrar cuál era la correcta
+                opciones.forEach(opt => {
+                    if (opt.innerText.includes('B)') && preguntaId === '1') opt.classList.add('correcta');
+                    if (opt.innerText.includes('A)') && preguntaId === '2') opt.classList.add('correcta');
+                    if (opt.innerText.includes('B)') && preguntaId === '3') opt.classList.add('correcta');
+                    if (opt.innerText.includes('A)') && preguntaId === '4') opt.classList.add('correcta');
+                    if (opt.innerText.includes('B)') && preguntaId === '5') opt.classList.add('correcta');
+                });
+            }
+
+            // Mostrar el cuadro de justificación
+            const feedback = elemento.parentElement.parentElement.querySelector('.feedback');
+            feedback.classList.remove('oculto');
+        }
+    </script>
+</body>
+</html>
