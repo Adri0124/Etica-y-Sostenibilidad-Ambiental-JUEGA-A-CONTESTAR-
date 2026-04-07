@@ -1,48 +1,171 @@
-def generar_reporte_final(datos_alumnos):
-    print("\n" + "="*40)
-    print("📊 INFORME FINAL DE RESULTADOS")
-    print("="*40)
-    
-    total_aciertos_grupo = 0
-    total_preguntas_grupo = 0
-    
-    for alumno in datos_alumnos:
-        nombre = alumno['nombre']
-        aciertos = alumno['aciertos']
-        total = alumno['total_preguntas']
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANIMATE A CONTESTAR! TP3 - UNIDAD 2: Ecología UNJu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .opcion { transition: all 0.2s ease; cursor: pointer; border: 2px solid #e2e8f0; margin-bottom: 10px; padding: 18px; border-radius: 15px; background: white; }
+        .opcion:hover { border-color: #10b981; background-color: #f0fdf4; transform: translateX(5px); }
+        .correcta { border-color: #10b981 !important; background-color: #d1fae5 !important; color: #065f46 !important; font-weight: bold; border-left: 8px solid #10b981 !important; }
+        .incorrecta { border-color: #ef4444 !important; background-color: #fee2e2 !important; color: #991b1b !important; border-left: 8px solid #ef4444 !important; }
+        .feedback { display: none; margin-top: 15px; padding: 15px; background-color: #f8fafc; border-radius: 12px; font-size: 14px; color: #334155; border: 1px solid #e2e8f0; line-height: 1.5; }
+        .pregunta { border-bottom: 2px solid #f1f5f9; padding-bottom: 2rem; }
         
-        # 1. Cálculo de la barra visual
-        porcentaje = (aciertos / total) * 100
-        longitud_barra = 20  # Caracteres de ancho
-        bloques = int((aciertos / total) * longitud_barra)
-        barra = "█" * bloques + "░" * (longitud_barra - bloques)
-        
-        # Sumamos para el informe global
-        total_aciertos_grupo += aciertos
-        total_preguntas_grupo += total
-        
-        print(f"{nombre.ljust(12)} | {barra} | {aciertos}/{total} ({porcentaje:.1f}%)")
+        /* Estilos para la barra de puntaje */
+        .progress-container { background: #e2e8f0; border-radius: 999px; height: 20px; width: 100%; overflow: hidden; margin: 20px 0; }
+        .progress-bar { background: #10b981; height: 100%; width: 0%; transition: width 1s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-50 p-4 md:p-10 font-sans">
 
-    # 2. Resumen Global
-    if total_preguntas_grupo > 0:
-        promedio_grupal = (total_aciertos_grupo / total_preguntas_grupo) * 100
-        print("-" * 40)
-        print(f"RESUMEN DEL GRUPO:")
-        print(f"• Total de alumnos: {len(datos_alumnos)}")
-        print(f"• Promedio de éxito: {promedio_grupal:.2f}%")
-        
-        if promedio_grupal >= 70:
-            print("Estado: ✅ OBJETIVO ALCANZADO")
-        else:
-            print("Estado: ⚠️ REQUIERE REPASO GENERAL")
-    print("="*40)
+    <div class="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-[2rem] shadow-2xl border border-slate-100">
+        <header class="text-center border-b-2 border-emerald-50 pb-8 mb-10">
+            <span class="bg-emerald-100 text-emerald-700 px-4 py-1 rounded-full text-xs font-black uppercase tracking-widest">Gabinete Virtual</span>
+            <h1 class="text-3xl font-black text-slate-800 mt-4 uppercase tracking-tight">Autoevaluación de Biodiversidad</h1>
+            <p class="text-emerald-600 font-bold mt-1">Cátedra de Ética y Sostenibilidad Ambiental - UNJu</p>
+        </header>
 
-# --- EJEMPLO DE USO ---
-# Esta lista la irías llenando conforme los alumnos terminan su test
-resultados = [
-    {"nombre": "Carlos", "aciertos": 8, "total_preguntas": 10},
-    {"nombre": "Elena", "aciertos": 10, "total_preguntas": 10},
-    {"nombre": "Marcos", "aciertos": 5, "total_preguntas": 10},
-]
+        <div id="quiz" class="space-y-12">
+            <!-- PREGUNTA 1 -->
+            <div class="pregunta" data-idx="0">
+                <p class="text-lg font-bold text-slate-800 mb-5 leading-tight">1. Según lo analizado previamente, ¿qué representa la Riqueza de especies (S)?</p>
+                <div class="opcion" onclick="validar(this, false, 0)">A) La distribución equitativa de los individuos entre las especies.</div>
+                <div class="opcion" onclick="validar(this, true, 0)">B) El recuento numérico del número de especies en la comunidad.</div>
+                <div class="opcion" onclick="validar(this, false, 0)">C) La cantidad total de biomasa por metro cuadrado.</div>
+                <div class="feedback"><strong>📚 Referencia:</strong> La Riqueza (S) es el parámetro más simple: solo cuenta cuántas especies hay, sin considerar su abundancia relativa.</div>
+            </div>
 
-generar_reporte_final(resultados)
+            <!-- PREGUNTA 2 -->
+            <div class="pregunta" data-idx="1">
+                <p class="text-lg font-bold text-slate-800 mb-5 leading-tight">2. En el monocultivo de Caña (Ficha B), la Dominancia es alta porque:</p>
+                <div class="opcion" onclick="validar(this, true, 1)">A) Una sola especie concentra la gran mayoría de los individuos.</div>
+                <div class="opcion" onclick="validar(this, false, 1)">B) Existen muchos estratos verticales compitiendo.</div>
+                <div class="opcion" onclick="validar(this, false, 1)">C) El sistema ha alcanzado su etapa clímax.</div>
+                <div class="feedback"><strong>📚 Referencia:</strong> Cuando el valor de Dominancia (D) es alto, significa que la comunidad está "sesgada o tiene" una especie predominante.</div>
+            </div>
+
+            <!-- PREGUNTA 3 -->
+            <div class="pregunta" data-idx="2">
+                <p class="text-lg font-bold text-slate-800 mb-5 leading-tight">3. ¿Qué ocurre con la Equidad (E) cuando los individuos están repartidos parejamente?</p>
+                <div class="opcion" onclick="validar(this, false, 2)">A) La Equidad tiende a cero.</div>
+                <div class="opcion" onclick="validar(this, true, 2)">B) La Equidad se acerca al valor máximo (1).</div>
+                <div class="opcion" onclick="validar(this, false, 2)">C) La Equidad desaparece del cálculo de Simpson.</div>
+                <div class="feedback"><strong>📚 Referencia:</strong> La equidad mide la homogeneidad. Si todas las especies tienen igual cantidad de individuos, la equidad es máxima.</div>
+            </div>
+
+            <!-- PREGUNTA 4 -->
+            <div class="pregunta" data-idx="3">
+                <p class="text-lg font-bold text-slate-800 mb-5 leading-tight">4. ¿Cuál es la consecuencia de perder el estrato de "Árboles Emergentes o dominantes" en el perfil?</p>
+                <div class="opcion" onclick="validar(this, true, 3)">A) Se reduce la complejidad estructural y los nichos disponibles.</div>
+                <div class="opcion" onclick="validar(this, false, 3)">B) Aumenta la diversidad de especies heliófilas.</div>
+                <div class="opcion" onclick="validar(this, false, 3)">C) No afecta la biodiversidad si se mantiene el suelo cubierto.</div>
+                <div class="feedback"><strong>📚 Referencia:</strong> La estratificación vertical (capas) permite que más especies coexistan en un mismo espacio físico.</div>
+            </div>
+
+            <!-- PREGUNTA 5 -->
+            <div class="pregunta" data-idx="4">
+                <p class="text-lg font-bold text-slate-800 mb-5 leading-tight">5. Desde el punto de vista Ecologico: ¿Por qué la simplificación del ecosistema es un riesgo ambiental?</p>
+                <div class="opcion" onclick="validar(this, false, 4)">A) Porque requiere menos uso de agroquímicos.</div>
+                <div class="opcion" onclick="validar(this, true, 4)">B) Porque vuelve al sistema frágil ante plagas y cambios climáticos (baja resiliencia).</div>
+                <div class="opcion" onclick="validar(this, false, 4)">C) Porque los sistemas simples son éticamente superiores.</div>
+                <div class="feedback"><strong>📚 Referencia:</strong> La diversidad funciona como un "seguro": a mayor biodiversidad, más capacidad tiene el sistema de recuperarse tras una perturbación.</div>
+            </div>
+        </div>
+
+        <div id="final-container"></div>
+
+        <footer class="mt-16 pt-8 border-t border-slate-100 text-center">
+            <p class="text-slate-400 text-xs uppercase tracking-widest font-bold">Facultad de Ciencias Agrarias - UNJu</p>
+        </footer>
+    </div>
+
+    <script>
+        let respondidas = 0;
+        let puntaje = 0; // Nueva variable para los aciertos
+        const total = 5;
+
+        function validar(el, esCorrecto, index) {
+            const padre = el.parentElement;
+            if (padre.classList.contains('bloqueada')) return;
+            
+            padre.classList.add('bloqueada');
+            respondidas++;
+
+            const opciones = padre.querySelectorAll('.opcion');
+            const feedback = padre.querySelector('.feedback');
+
+            if(esCorrecto) {
+                el.classList.add('correcta');
+                puntaje++; // Sumar punto si es correcta
+            } else {
+                el.classList.add('incorrecta');
+                opciones.forEach(o => {
+                    // Lógica para mostrar la correcta (basada en tu estructura)
+                    if(o.innerText.startsWith('A)') && (index === 1 || index === 3)) o.classList.add('correcta');
+                    if(o.innerText.startsWith('B)') && (index === 0 || index === 2 || index === 4)) o.classList.add('correcta');
+                });
+            }
+
+            opciones.forEach(o => o.style.pointerEvents = 'none');
+            feedback.style.display = 'block';
+
+            if(respondidas === total) {
+                setTimeout(mostrarMensajeFinal, 800);
+            }
+        }
+
+        function mostrarMensajeFinal() {
+            const contenedor = document.getElementById('final-container');
+            const porcentaje = (puntaje / total) * 100;
+            
+            // Definir mensaje según puntaje
+            let mensajePersonalizado = "";
+            let colorFondo = "bg-emerald-600";
+            
+            if(puntaje === 5) {
+                mensajePersonalizado = "¡Excelente! Dominas perfectamente los conceptos de biodiversidad.";
+            } else if (puntaje >= 3) {
+                mensajePersonalizado = "¡Muy bien! Tienes una buena base, aunque puedes repasar algunos conceptos.";
+                colorFondo = "bg-blue-600";
+            } else {
+                mensajePersonalizado = "¡Buen intento! Te recomendamos volver a leer la teoría del TP3 para reforzar.";
+                colorFondo = "bg-amber-600";
+            }
+
+            contenedor.innerHTML = `
+                <div class="mt-12 p-10 ${colorFondo} text-white rounded-[2rem] text-center shadow-2xl animate-bounce-short">
+                    <h2 class="text-4xl font-black mb-2">RESULTADO FINAL</h2>
+                    <p class="text-2xl font-bold mb-4">${puntaje} de ${total} respuestas correctas</p>
+                    
+                    <div class="progress-container">
+                        <div id="barra-final" class="progress-bar"></div>
+                    </div>
+
+                    <p class="text-emerald-50 text-lg italic mt-4">"${mensajePersonalizado}"</p>
+                    
+                    <div class="mt-8 bg-black/20 p-4 rounded-xl inline-block border border-white/30">
+                        <p class="text-sm font-bold uppercase tracking-widest">Ya podés cerrar esta ventana y finalizar tu informe.</p>
+                    </div>
+                </div>
+            `;
+            
+            // Activar la animación de la barra después de renderizar
+            setTimeout(() => {
+                document.getElementById('barra-final').style.width = porcentaje + "%";
+            }, 100);
+
+            contenedor.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+    <style>
+        @keyframes bounce-short {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-short { animation: bounce-short 1.5s ease-in-out; }
+    </style>
+</body>
+</html>
